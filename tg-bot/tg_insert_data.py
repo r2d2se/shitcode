@@ -3,15 +3,21 @@ from aiogram.filters import CommandStart, StateFilter
 from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from h11 import Data
 
-from tg_bot_keyboard import start_keyboard, restart_keyboard11
+from tg_bot_keyboard import start_keyboard, restart_keyboard11, delete_keyboard
+
 tg_bot = Router()
 
 
 class Form(StatesGroup):
     start = State()
     FIO = State()
+    date_born = State()
 
+
+@tg_bot.message(F.text.lower() == "рестарт")
+@tg_bot.message(F.text.lower() == "restart")
 @tg_bot.message(StateFilter(None), CommandStart())
 async def start_message(message: types.Message, state: FSMContext):
     await message.answer(
@@ -21,7 +27,7 @@ async def start_message(message: types.Message, state: FSMContext):
 
 
 @tg_bot.message(StateFilter("*"), F.text.lower() == "отмена")
-@tg_bot.message(F.text.lower() == 'нет, я передумала')
+@tg_bot.message(F.text.lower() == "нет, я передумала")
 async def reboot_bot(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
@@ -32,10 +38,22 @@ async def reboot_bot(message: types.Message, state: FSMContext):
     )
 
 
-@tg_bot.message(Form.start, F.text.lower() == "да, нужно добавить учётку", )
+@tg_bot.message(
+    Form.start,
+    F.text.lower() == "да, нужно добавить учётку",
+)
 async def add_uchetka(message: types.Message, state: FSMContext):
-    await state.update_data()
-    await message.answer("Введите ФИО, (Васильев Василий Васильевич)")
+    await message.answer("Введите ФИО, (Пример:Васильев Василий Васильевич)", reply_markup=delete_keyboard)
     await state.set_state(Form.FIO)
 
-@tg_bot.message(Form.FIO, F.text.lower() == "да, нужно добавить учётку")
+ 
+a = ''
+@tg_bot.message(Form.FIO, F.text)
+async def get_fio(message: types.Message, state: FSMContext):
+    await state.update_data(fio=message.text)
+    a = message.text
+    await message.answer("Введите дату рождения (Пример:10.10.1488)")
+    await state.set_state(Form.date_born)
+    data = await state.get_data()
+    global a
+print(a)

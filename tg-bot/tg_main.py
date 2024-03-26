@@ -6,7 +6,7 @@ from tg_insert_data import tg_bot
 
 ALOWED_UPDATES = ["message"]
 
-bot = Bot(token="")
+bot = Bot(token="6537139791:AAG-dkwUAvH3HhpTlMEAQQ9KMS2lV3ErTzY")
 dp = Dispatcher()
 
 dp.include_router(tg_bot)
