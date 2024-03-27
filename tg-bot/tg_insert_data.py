@@ -3,8 +3,8 @@ from aiogram.filters import CommandStart, StateFilter
 from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from h11 import Data
 
+from database import database
 from tg_bot_keyboard import start_keyboard, restart_keyboard11, delete_keyboard
 
 tg_bot = Router()
@@ -43,16 +43,19 @@ async def reboot_bot(message: types.Message, state: FSMContext):
     F.text.lower() == "да, нужно добавить учётку",
 )
 async def add_uchetka(message: types.Message, state: FSMContext):
-    await message.answer("Введите ФИО, (Пример:Васильев Василий Васильевич)", reply_markup=delete_keyboard)
+    await message.answer(
+        "Введите ФИО, (Пример:Васильев Василий Васильевич)",
+        reply_markup=delete_keyboard,
+    )
     await state.set_state(Form.FIO)
 
- 
-a = ''
+
 @tg_bot.message(Form.FIO, F.text)
 async def get_fio(message: types.Message, state: FSMContext):
     await state.update_data(fio=message.text)
-    a = message.text
     await message.answer("Введите дату рождения (Пример:10.10.1488)")
     await state.set_state(Form.date_born)
     data = await state.get_data()
     print(data)
+    await database.sql_add_command(data)
+    
