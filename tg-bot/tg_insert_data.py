@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
 from database import database
-from tg_bot_keyboard import start_keyboard, restart_keyboard11, delete_keyboard
+from tg_bot_keyboard import start_keyboard, restart_keyboard11, delete_keyboard, continue_keyboard
 
 tg_bot = Router()
 
@@ -14,7 +14,11 @@ class Form(StatesGroup):
     start = State()
     FIO = State()
     date_born = State()
-
+    number = State()
+    job_title = State()
+    departament = State()
+    gender = State()
+    rights = State()
 
 @tg_bot.message(F.text.lower() == "рестарт")
 @tg_bot.message(F.text.lower() == "restart")
@@ -55,7 +59,75 @@ async def get_fio(message: types.Message, state: FSMContext):
     await state.update_data(fio=message.text)
     await message.answer("Введите дату рождения (Пример:10.10.1488)")
     await state.set_state(Form.date_born)
-    data = await state.get_data()
-    print(data)
-    await database.sql_add_command(data)
     
+
+@tg_bot.message(Form.date_born, F.text)
+async def get_date_born(message: types.Message, state: FSMContext):
+    await state.update_data(date_born=message.text)
+    await message.answer("Введите номер телефона(Пример: 88005553535 или 8-800-555-35-35)")
+    await state.set_state(Form.number)
+   
+@tg_bot.message(Form.number, F.text)
+async def get_number(message: types.Message, state: FSMContext):
+    await state.update_data(number=message.text)
+    await message.answer("Введите должность")
+    await state.set_state(Form.job_title)
+
+@tg_bot.message(Form.job_title, F.text)
+async def get_job_title(message: types.Message, state: FSMContext):
+    await state.update_data(job_title=message.text)
+    await message.answer('Отдел по умолчанию стажёры, нажмите продолжить',reply_markup=continue_keyboard)
+    await state.set_state(Form.departament)
+
+@tg_bot.message(Form.departament, F.text.lower() == 'продолжить')
+async def get_departament(message: types.Message, state: FSMContext):
+    await message.answer('Введите пол (Пример: м или М, ж или Ж)',reply_markup=delete_keyboard)
+    await state.set_state(Form.gender)
+
+@tg_bot.message(Form.gender, F.text)
+async def get_gender(message: types.Message, state: FSMContext):
+    await state.update_data(gender=message.text)
+    await message.answer("Права(Пример: Белявцев Дмитрий.Крайне важно указывать фамилию и имя, как указано в битриксе. Информация по правам тянется из него)")  
+    await state.set_state(Form.rights)
+
+@tg_bot.message(Form.rights, F.text)
+async def get_rights(message: types.Message, state: FSMContext):
+    await state.update_data(rights=message.text)
+    data = await state.get_data()
+    await database.sql_add_command(data)
+    print(data)
+    await state.clear()
+    await message.answer('Учётка пошла создаваться, ожидайте отправки данных уч.записи. Нужно ещё создать учётку?', reply_markup=start_keyboard)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#await state.clear()
