@@ -55,5 +55,4 @@ async def get_fio(message: types.Message, state: FSMContext):
     await message.answer("Введите дату рождения (Пример:10.10.1488)")
     await state.set_state(Form.date_born)
     data = await state.get_data()
-    global a
-print(a)
+    print(data)
