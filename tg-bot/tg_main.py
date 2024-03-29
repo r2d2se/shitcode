@@ -23,6 +23,6 @@ async def main():
     database.sql_start()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, allowed_updates=ALOWED_UPDATES)
-    
 
-asyncio.run(main())  
+
+asyncio.run(main())
