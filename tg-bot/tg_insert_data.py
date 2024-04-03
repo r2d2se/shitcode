@@ -115,11 +115,8 @@ async def get_rights(message: types.Message, state: FSMContext):
     data = await state.get_data()
     await database.sql_add_command(data)
     print(data)
-    await state.clear()
     await message.answer(
         "Учётка пошла создаваться, ожидайте отправки данных уч.записи. Нужно ещё создать учётку?",
         reply_markup=start_keyboard,
     )
-
-
-# await state.clear()
+    await state.clear()

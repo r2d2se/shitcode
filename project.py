@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select
+from get_data_from_database import family,name,surname,date,number_phone,gender,root,job_title
 
 firefox_options = Options()
 firefox_options.add_argument("--headless")
@@ -21,19 +22,19 @@ def perehod_na_str(link):
     driver.get(link)
 
 
-with open(txt_file, encoding="utf-8") as f:
-    family = f.readline().split()
-    name = f.readline().split()
-    surname = f.readline().split()
-    date = f.readline().split()
-    number_phone = f.readline().split()
-    job_title = f.readline().split()
-    department = f.readline().split()
-    gender = f.readline().split()
-    root = f.readline().split()
-rabota = " ".join(job_title[1:10])
-interior_number = ""  # тут должен стоять номер октела, перезаписать
-root = " ".join(root[3:6])
+#with open(txt_file, encoding="utf-8") as f:
+    #family = f.readline().split()
+    #name = f.readline().split()
+    #surname = f.readline().split()
+    #date = f.readline().split()
+    #number_phone = f.readline().split()
+    #job_title = f.readline().split()
+    #department = f.readline().split()
+    #gender = f.readline().split()
+    #root = f.readline().split()
+#rabota = " ".join(job_title[1:10])
+#interior_number = ""  # тут должен стоять номер октела, перезаписать
+#root = " ".join(root[3:6])
 # Читаем файл построчно и разбиваем на список из сторонней инфы и нужной [фамилия:значение]
 
 
