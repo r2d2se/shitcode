@@ -1,3 +1,5 @@
+import os
+
 from aiogram import F, Router
 from aiogram.filters import CommandStart, StateFilter
 from aiogram import types
@@ -9,14 +11,13 @@ from tg_bot_keyboard import (
     start_keyboard,
     restart_keyboard11,
     delete_keyboard,
-    continue_keyboard,
+    gender_keyboard
 )
 
 tg_bot = Router()
 
 
 class Form(StatesGroup):
-    start = State()
     FIO = State()
     date_born = State()
     number = State()
@@ -26,14 +27,14 @@ class Form(StatesGroup):
     rights = State()
 
 
+@tg_bot.message(F.text.lower() == "старт")
 @tg_bot.message(F.text.lower() == "рестарт")
 @tg_bot.message(F.text.lower() == "restart")
-@tg_bot.message(StateFilter(None), CommandStart())
-async def start_message(message: types.Message, state: FSMContext):
+@tg_bot.message(CommandStart())
+async def start_message(message: types.Message):
     await message.answer(
         text="Добавить нового сотрудника?", reply_markup=start_keyboard
     )
-    await state.set_state(Form.start)
 
 
 @tg_bot.message(StateFilter("*"), F.text.lower() == "отмена")
@@ -49,7 +50,7 @@ async def reboot_bot(message: types.Message, state: FSMContext):
 
 
 @tg_bot.message(
-    Form.start,
+    StateFilter(None),
     F.text.lower() == "да, нужно добавить учётку",
 )
 async def add_uchetka(message: types.Message, state: FSMContext):
@@ -87,16 +88,15 @@ async def get_number(message: types.Message, state: FSMContext):
 async def get_job_title(message: types.Message, state: FSMContext):
     await state.update_data(job_title=message.text)
     await message.answer(
-        "Отдел по умолчанию стажёры, нажмите продолжить", reply_markup=continue_keyboard
+        "Укажите отдел (подразделение автоматически будет выбрано, как стажёры)"
     )
     await state.set_state(Form.departament)
 
 
-@tg_bot.message(Form.departament, F.text.lower() == "продолжить")
+@tg_bot.message(Form.departament, F.text.lower)
 async def get_departament(message: types.Message, state: FSMContext):
-    await message.answer(
-        "Введите пол (Пример: м или М, ж или Ж)", reply_markup=delete_keyboard
-    )
+    await state.update_data(departament=message.text)
+    await message.answer("Введите пол (Пример: м или М, ж или Ж)",reply_markup=gender_keyboard)
     await state.set_state(Form.gender)
 
 
@@ -119,4 +119,7 @@ async def get_rights(message: types.Message, state: FSMContext):
         "Учётка пошла создаваться, ожидайте отправки данных уч.записи. Нужно ещё создать учётку?",
         reply_markup=start_keyboard,
     )
+    os.system(
+        "python F:\project\zaeblo\zaeblo\project.py"
+    )  # тут указываем путь на серве
     await state.clear()
