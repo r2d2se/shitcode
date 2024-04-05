@@ -1,6 +1,6 @@
 import asyncio
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher,F
 
 from tg_insert_data import tg_bot
 from database import database

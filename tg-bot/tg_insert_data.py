@@ -13,8 +13,10 @@ from tg_bot_keyboard import (
     delete_keyboard,
     gender_keyboard
 )
+from filters import ByID
 
 tg_bot = Router()
+tg_bot.message.filter(ByID([1006946163]))
 
 
 class Form(StatesGroup):
