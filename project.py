@@ -1,4 +1,4 @@
-import time, random, string
+import time, random, string,os
 
 import sqlite3 as sq
 import logging
@@ -71,10 +71,10 @@ mail_user_generate = translit(
 )  # собираем почту из фамилии и имени
 mail_user = str(mail_user_generate)
 mail_user = mail_user.lower()
-login_adm_mail = "admin.bot@stavtrack.ru"
-password_adm_mail = "WH5gA5u#8#Su!#4i"  # нужно будет передать в переменные окружения пароли и логины от админки или найти иной безопасный вариант
-login_bit_adm = "maksimka.efimov.77@mail.ru"
-password_adm_bitrix = " 5e@*6#U$P3wi5^*p"
+login_adm_mail = os.environ["LOGIN_ADM_MAIL"]
+password_adm_mail = os.environ["PASSWORD_ADM_MAIL"]  # нужно будет передать в переменные окружения пароли и логины от админки или найти иной безопасный вариант
+login_bit_adm = os.environ["LOGIN_ADM_BITRIX"]
+password_adm_bitrix = os.environ["PASSWORD_ADM_BITRIX"]
 
 
 perehod_na_str("https://adm-ui.mail.autotracker.site")
@@ -103,8 +103,8 @@ create_box = driver.find_element(
     By.XPATH, "/html/body/div/form/div/div[3]/div/div/input"
 )
 
-# create_box.click()  # Создание почтового ящика
-time.sleep(5)
+create_box.click()  # Создание почтового ящика
+time.sleep(10)
 
 perehod_na_str("https://portal.stavtrack.ru/bitrix/admin/user_admin.php?lang=ru")
 driver.find_element(
@@ -286,7 +286,7 @@ driver.find_element(
     "/html/body/table/tbody/tr[2]/td[2]/div/form/div/div[3]/div[13]/div[2]/table/tbody/tr[27]/td[2]/table/tbody/tr/td/input",
 ).send_keys(Keys.CONTROL + "a", Keys.BACKSPACE)
 
-# driver.find_element(By.NAME, "apply").click()
+driver.find_element(By.NAME, "apply").click()
 # создание юзверя в битриксе
 
 driver.get("https://portal.stavtrack.ru")
@@ -295,7 +295,7 @@ driver.find_element(By.ID, "bx-im-bar-search").click()
 driver.find_element(
     By.XPATH,
     "/html/body/div[8]/div/div[1]/div/div/div[2]/div/div/div[2]/div[1]/div/input",
-).send_keys("Ефимов")
+).send_keys("Краснобаева Валерия")
 time.sleep(5)
 driver.find_element(
     By.XPATH,
