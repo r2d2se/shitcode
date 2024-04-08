@@ -84,7 +84,6 @@ password_form = driver.find_element(By.ID, "fPassword")
 password_form.send_keys(password_adm_mail)
 button = driver.find_element(By.XPATH, "/html/body/div/div/div/form/div[4]/button")
 button.click()
-time.sleep(5)
 perehod_na_str(
     "https://adm-ui.mail.autotracker.site/edit.php?table=mailbox&domain=stavtrack.ru"
 )
@@ -121,7 +120,7 @@ driver.find_element(
 time.sleep(5)
 
 driver.find_element(By.XPATH, '//*[@id="tbl_user_search"]').send_keys(root)
-time.sleep(5)
+time.sleep(3)
 
 get_id = driver.find_element(
     By.XPATH,

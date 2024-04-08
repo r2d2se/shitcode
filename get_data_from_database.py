@@ -24,9 +24,7 @@ fields = [
     "root",
 ]
 cur.execute("SELECT  * FROM account LIMIT 1")
-cur.execute(
-    "SELECT id, fio, date_born, number, job_title, departament,gender, rights FROM account WHERE created=0"
-)
+cur.execute("SELECT id, fio, date_born, number, job_title, departament,gender, rights FROM account WHERE created=0")
 
 accounts = cur.fetchall()
 for account in accounts:

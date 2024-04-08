@@ -11,7 +11,7 @@ from tg_bot_keyboard import (
     start_keyboard,
     restart_keyboard11,
     delete_keyboard,
-    gender_keyboard,
+    gender_keyboard
 )
 from filters import ByID
 
@@ -98,9 +98,7 @@ async def get_job_title(message: types.Message, state: FSMContext):
 @tg_bot.message(Form.departament, F.text.lower)
 async def get_departament(message: types.Message, state: FSMContext):
     await state.update_data(departament=message.text)
-    await message.answer(
-        "Введите пол (Пример: м или М, ж или Ж)", reply_markup=gender_keyboard
-    )
+    await message.answer("Введите пол (Пример: м или М, ж или Ж)",reply_markup=gender_keyboard)
     await state.set_state(Form.gender)
 
 
@@ -108,13 +106,9 @@ async def get_departament(message: types.Message, state: FSMContext):
 async def get_gender(message: types.Message, state: FSMContext):
     await state.update_data(gender=message.text)
     await message.answer(
-        "Права(Пример: Белявцев Дмитрий.Крайне важно указывать фамилию и имя, как указано в битриксе. Информация по правам тянется из него)",
-        reply_markup=delete_keyboard,
-    )
+        "Права(Пример: Белявцев Дмитрий.Крайне важно указывать фамилию и имя, как указано в битриксе. Информация по правам тянется из него)"
+    ,reply_markup=delete_keyboard)
     await state.set_state(Form.rights)
-
-
-path = os.environ["PATH_TO_PROJECT"]
 
 
 @tg_bot.message(Form.rights, F.text)
@@ -127,5 +121,7 @@ async def get_rights(message: types.Message, state: FSMContext):
         "Учётка пошла создаваться, ожидайте отправки данных уч.записи. Нужно ещё создать учётку?",
         reply_markup=start_keyboard,
     )
-    os.system(path)  # тут указываем путь на серве
+    os.system(
+        "python3 /root/tg_bot/create_new_user_new/project.py"
+    )  # тут указываем путь на серве
     await state.clear()
