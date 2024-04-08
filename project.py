@@ -291,8 +291,9 @@ driver.find_element(By.NAME, "apply").click()
 # создание юзверя в битриксе
 
 driver.get("https://portal.stavtrack.ru")
-time.sleep(5)
+time.sleep(7)
 driver.find_element(By.ID, "bx-im-bar-search").click()
+time.sleep(7)
 driver.find_element(
     By.XPATH,
     "/html/body/div[8]/div/div[1]/div/div/div[2]/div/div/div[2]/div[1]/div/input",
