@@ -297,7 +297,7 @@ time.sleep(7)
 driver.find_element(
     By.XPATH,
     "/html/body/div[8]/div/div[1]/div/div/div[2]/div/div/div[2]/div[1]/div/input",
-).send_keys("Краснобаева Валерия")
+).send_keys("Ефимов")
 time.sleep(5)
 driver.find_element(
     By.XPATH,
