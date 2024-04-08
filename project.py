@@ -24,7 +24,7 @@ from get_data_from_database import (
 
 firefox_options = Options()
 firefox_options.add_argument("--headless")
-driver = webdriver.Firefox()
+driver = webdriver.Firefox(options=firefox_options)
 
 
 def perehod_na_str(link):
@@ -76,7 +76,7 @@ password_adm_mail = os.environ["PASSWORD_ADM_MAIL"]  # нужно будет п�
 login_bit_adm = os.environ["LOGIN_ADM_BITRIX"]
 password_adm_bitrix = os.environ["PASSWORD_ADM_BITRIX"]
 
-
+time.sleep(5)
 perehod_na_str("https://adm-ui.mail.autotracker.site")
 email_form = driver.find_element(By.ID, "fUsername")
 email_form.send_keys(login_adm_mail)
@@ -84,9 +84,11 @@ password_form = driver.find_element(By.ID, "fPassword")
 password_form.send_keys(password_adm_mail)
 button = driver.find_element(By.XPATH, "/html/body/div/div/div/form/div[4]/button")
 button.click()
+time.sleep(5)
 perehod_na_str(
     "https://adm-ui.mail.autotracker.site/edit.php?table=mailbox&domain=stavtrack.ru"
 )
+time.sleep(5)
 area_mail = driver.find_element(
     By.XPATH, "/html/body/div/form/div/div[2]/div[1]/div/input"
 )
@@ -119,7 +121,7 @@ driver.find_element(
 time.sleep(5)
 
 driver.find_element(By.XPATH, '//*[@id="tbl_user_search"]').send_keys(root)
-time.sleep(3)
+time.sleep(5)
 
 get_id = driver.find_element(
     By.XPATH,
@@ -322,5 +324,5 @@ logging.basicConfig(filename="app.log", level=logging.INFO)
 logging.info(f"Учётка создана {id}")
 
 
-# driver.close()
-# driver.quit()
+driver.close()
+driver.quit()

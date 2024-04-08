@@ -1,13 +1,13 @@
 import asyncio
-
+import os
 from aiogram import Bot, Dispatcher,F
 
 from tg_insert_data import tg_bot
 from database import database
 
 ALOWED_UPDATES = ["message"]
-
-bot = Bot(token="6537139791:AAG-dkwUAvH3HhpTlMEAQQ9KMS2lV3ErTzY")
+token = os.environ['TOKEN']
+bot = Bot(token=token)
 dp = Dispatcher()
 
 dp.include_router(tg_bot)
